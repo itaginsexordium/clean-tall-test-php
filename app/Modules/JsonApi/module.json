@@ -1,0 +1,11 @@
+{
+    "name": "JsonApi",
+    "alias": "jsonapi",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\JsonApi\\Providers\\JsonApiServiceProvider"
+    ],
+    "files": []
+}

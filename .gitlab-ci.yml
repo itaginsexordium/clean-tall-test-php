@@ -1,0 +1,37 @@
+image: registry.intranet.aknet.kg:5000/aknet/gitlab-runner:d386f070
+
+stages:
+  - build
+
+variables:
+  CONTAINER_IMAGE: aknet/crmgosearchhelper:app-${CI_COMMIT_SHORT_SHA}
+  GIT_SUBMODULE_STRATEGY: recursive
+  MYSQL_HOST: mysql.gitlab-managed-apps.svc.cluster.local
+  MYSQL_PORT: 3306
+  MYSQL_USER: root
+
+  MYSQL_DATABASE: crmgosearchhelper_$CI_COMMIT_SHORT_SHA
+  MYSQL_USERNAME: root
+  MYSQL_PASSWORD: 123456
+
+build:app:
+  stage: build
+  image:
+    name: registry.intranet.aknet.kg:5000/aknet/gitlab-runner:kaniko-7cd99046
+  script:
+    - sed -i "s/APP_VERSION/${CI_COMMIT_SHORT_SHA}/g" app/config/version.php
+    - /kaniko/executor
+      --context $CI_PROJECT_DIR
+      --dockerfile $CI_PROJECT_DIR/Dockerfile
+      --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+
+build:cron:
+  stage: build
+  image:
+    name: registry.intranet.aknet.kg:5000/aknet/gitlab-runner:kaniko-7cd99046
+  script:
+      - sed -i "s/APP_VERSION/${CI_COMMIT_SHORT_SHA}/g" app/config/version.php
+      - /kaniko/executor
+        --context $CI_PROJECT_DIR
+        --dockerfile $CI_PROJECT_DIR/Dockerfile.cron
+        --destination $CI_REGISTRY_IMAGE:cron-$CI_COMMIT_SHORT_SHA

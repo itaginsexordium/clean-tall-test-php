@@ -1,0 +1,11 @@
+{
+    "name": "Testovoe",
+    "alias": "testovoe",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Testovoe\\Providers\\TestovoeServiceProvider"
+    ],
+    "files": []
+}

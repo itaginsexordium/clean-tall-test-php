@@ -1,0 +1,5 @@
+FROM registry.intranet.aknet.kg:5000/aknet/php81:cron-77c55b33
+
+COPY kube/crontab /etc/crontab
+
+RUN chmod 0644 /etc/crontab

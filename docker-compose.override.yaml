@@ -1,0 +1,49 @@
+version: '3.8'
+
+x-template: &template
+  stdin_open: true
+  tty: true
+
+x-app-volume: &app-volume ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+
+x-project-env: &project-env
+  APP_NAME: ${APP_NAME}
+  APP_URL:  ${APP_URL}
+
+x-backend-env: &backend-env
+  MYSQL_HOST: ${MYSQL_HOST}
+  MYSQL_PORT: ${MYSQL_PORT}
+  MYSQL_DATABASE: ${MYSQL_DATABASE}
+  MYSQL_USERNAME: ${MYSQL_USERNAME}
+  MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+  MINIO_URL: ${MINIO_URL}
+  MINIO_ENDPOINT: ${MINIO_ENDPOINT}
+  MINIO_ACCESS_KEY_ID: ${MINIO_ACCESS_KEY_ID}
+  MINIO_SECRET_ACCESS_KEY: ${MINIO_SECRET_ACCESS_KEY}
+  MINIO_BUCKET: ${MINIO_BUCKET}
+  MANTICORE_HOST: ${MANTICORE_HOST}
+  MANTICORE_PORT: ${MANTICORE_PORT}
+
+x-db-env: &db-env
+  MYSQL_HOST: ${MYSQL_HOST}
+  MYSQL_PORT: ${MYSQL_PORT}
+  MYSQL_DATABASE: ${MYSQL_DATABASE}
+  MYSQL_USERNAME: ${MYSQL_USERNAME}
+  MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+x-minio-env: &minio-env
+  MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+  MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+  MINIO_DEFAULT_BUCKETS: ${MINIO_DEFAULT_BUCKETS}
+
+services:
+
+  app:
+    environment:
+      <<: [*backend-env, *project-env]
+    ports:
+    - "${NGINX_HTTP}:80"
+    volumes:
+      - ./app:/app   
+      # - *app-volume
+      # - "app:/var/www/html"
