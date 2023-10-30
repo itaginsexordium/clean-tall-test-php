@@ -25,7 +25,7 @@ class HomeController extends Controller
             ORDER BY idv.subnet_mask ASC");
         }
 
-        if (!empty($request->as_json)) {
+        if (empty($request->as_json)) {
             return response()->json($data);
         } else {
             return view('welcome', [
